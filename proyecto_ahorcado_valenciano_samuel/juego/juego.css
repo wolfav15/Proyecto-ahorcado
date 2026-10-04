@@ -1,0 +1,370 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
+
+/* ==========================================================================
+   Base y Fondo Neon Grid
+   ========================================================================== */
+:root {
+    --neon-green: #00ff66;
+    --neon-pink: #ff007f;
+    --neon-cyan: #00f3ff;
+    --neon-yellow: #ffe600;
+    --bg-dark: #0a0a12;
+    --panel-bg: #12121c;
+    --panel-border: #1f1f33;
+}
+
+body {
+    font-family: 'Share Tech Mono', monospace;
+    background-color: var(--bg-dark);
+    /* Retícula futurista de fondo */
+    background-image:
+        linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+    color: #e0e0ff;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* Encabezado Principal estilo Retro Arcade */
+h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1rem;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 8px rgba(0, 243, 255, 0.6);
+    margin: 10px 0 15px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* ==========================================================================
+   Cronómetro & HUD (Display Digital)
+   ========================================================================== */
+#timer {
+    font-family: 'VT323', monospace;
+    font-size: 1.6rem;
+    background-color: #000;
+    padding: 6px 20px;
+    border-radius: 4px;
+    display: inline-block;
+    color: var(--neon-green);
+    border: 1px solid var(--neon-green);
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.2), inset 0 0 8px rgba(0, 255, 102, 0.3);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+/* ==========================================================================
+   Pantalla de la Palabra (Efecto Monitor CRT)
+   ========================================================================== */
+#palabra-mascara {
+    font-family: 'VT323', monospace;
+    font-size: 4rem;
+    letter-spacing: 16px;
+    margin: 20px auto;
+    color: #fff;
+    text-shadow: 0 0 12px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+    background: #05050a;
+    padding: 25px 40px;
+    border-radius: 12px;
+    border: 2px solid var(--neon-cyan);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.25), inset 0 0 15px rgba(0, 0, 0, 0.8);
+    max-width: 90%;
+    word-break: break-all;
+    position: relative;
+}
+
+/* Detalle visual de pantalla antigua */
+#palabra-mascara::after {
+    content: " ";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+    pointer-events: none;
+    border-radius: 10px;
+}
+
+/* Indicadores de Vidas y Fallos */
+p {
+    font-size: 1.1rem;
+    color: #a0a0c0;
+    margin: 8px 0;
+    text-transform: uppercase;
+}
+
+#intentos-conteo {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.2rem;
+    color: var(--neon-pink);
+    text-shadow: 0 0 8px var(--neon-pink);
+}
+
+#letras-falladas {
+    font-family: 'VT323', monospace;
+    font-size: 1.8rem;
+    color: var(--neon-yellow);
+    text-shadow: 0 0 8px var(--neon-yellow);
+    letter-spacing: 4px;
+}
+
+/* ==========================================================================
+   Teclado Virtual (Botones 3D Tactiles / Arcade)
+   ========================================================================== */
+#teclado {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(42px, 1fr));
+    gap: 8px;
+    max-width: 680px;
+    width: 100%;
+    margin: 25px auto;
+    padding: 20px;
+    background-color: var(--panel-bg);
+    border: 2px solid var(--panel-border);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+.tecla-ahorcado {
+    font-family: 'Share Tech Mono', monospace;
+    background: linear-gradient(180deg, #2a2a40 0%, #1a1a28 100%);
+    color: #ffffff;
+    border: 1px solid #3d3d5c;
+    padding: 14px 0;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    /* Efecto Botón 3D presionable */
+    box-shadow: 0 5px 0 #10101a, 0 8px 10px rgba(0,0,0,0.5);
+    position: relative;
+    top: 0;
+}
+
+.tecla-ahorcado:hover:not(:disabled) {
+    background: linear-gradient(180deg, #3d3d60 0%, #2a2a40 100%);
+    color: var(--neon-cyan);
+    border-color: var(--neon-cyan);
+    box-shadow: 0 5px 0 #10101a, 0 0 12px rgba(0, 243, 255, 0.4);
+}
+
+.tecla-ahorcado:active:not(:disabled) {
+    top: 4px;
+    box-shadow: 0 1px 0 #10101a;
+}
+
+/* Estado Teclas Deshabilitadas */
+.tecla-ahorcado:disabled {
+    background: #101018;
+    color: #33334d;
+    border-color: #1a1a26;
+    box-shadow: none;
+    cursor: not-allowed;
+    top: 4px;
+    opacity: 0.5;
+}
+
+/* ==========================================================================
+   Botones de Control
+   ========================================================================== */
+#acciones, #opciones-finales {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Estilos para Formularios e Inputs (Añadido para nuevo_juego.php)
+   ========================================================================== */
+
+   .btn-accion {
+       display: inline-block;
+       padding: 10px 20px;
+       background-color: #007bff;
+       color: #ffffff;
+       text-decoration: none;
+       border: none;
+       border-radius: 5px;
+       font-size: 16px;
+       font-family: inherit;
+       cursor: pointer;
+       text-align: center;
+       transition: background-color 0.2s ease;
+   }
+
+   .btn-accion:hover {
+       background-color: #0056b3;
+       color: #ffffff;
+   }
+
+button,
+input[type="submit"] {
+    font-family: 'Share Tech Mono', monospace;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 4px;
+    border: 2px solid var(--neon-green);
+    background-color: transparent;
+    color: var(--neon-green);
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    margin-top: 15px;
+    width: 100%;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: var(--neon-green);
+    color: #000;
+    box-shadow: 0 0 20px rgba(0, 255, 102, 0.7);
+}
+
+button:active,
+input[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+/* 2. Contenedor del Formulario */
+form {
+    background-color: var(--panel-bg);
+    padding: 30px;
+    border-radius: 12px;
+    border: 2px solid var(--neon-cyan);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.2), inset 0 0 15px rgba(0, 0, 0, 0.8);
+    max-width: 420px;
+    width: 100%;
+    margin: 20px auto;
+    text-align: left;
+}
+
+/* 3. Estilo para las Opciones (Radio Buttons y Labels) */
+form label {
+    display: flex;
+    align-items: center;
+    font-size: 1.05rem;
+    color: #ffffff;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+form label:hover {
+    color: var(--neon-green);
+}
+
+input[type="radio"] {
+    accent-color: var(--neon-green);
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* Opciones post-partida */
+#opciones-finales button {
+    background-color: var(--neon-green);
+    color: #000;
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+}
+#opciones-finales button:hover {
+    background-color: #00cc52;
+    box-shadow: 0 0 20px rgba(0, 255, 102, 0.8);
+}
+#opciones-finales a:last-child button {
+    background-color: transparent;
+    color: var(--neon-cyan);
+    border: 2px solid var(--neon-cyan);
+}
+#opciones-finales a:last-child button:hover {
+    background-color: var(--neon-cyan);
+    color: #000;
+}
+
+/* ==========================================================================
+   Mensaje Final (Victoria / Derrota)
+   ========================================================================== */
+#mensaje-final {
+    margin: 25px auto;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    background-color: #000;
+    border: 2px solid #fff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    animation: zoomIn 0.3s ease-out;
+}
+
+#mensaje-final h3 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ==========================================================================
+   Ranking (Tabla Leaderboard Retro)
+   ========================================================================== */
+#ranking-contenedor {
+    margin-top: 35px;
+    width: 100%;
+    max-width: 480px;
+}
+
+#ranking-contenedor h3 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.9rem;
+    color: var(--neon-yellow);
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #080810;
+    border: 2px solid var(--neon-cyan) ;
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.15);
+}
+
+th {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.7rem;
+    background-color: #151525;
+    color: var(--neon-cyan);
+    padding: 12px;
+    border-bottom: 2px solid var(--neon-cyan);
+}
+
+td {
+    font-size: 1.1rem;
+    padding: 10px;
+    border-bottom: 1px solid #1a1a2e;
+}
+
+tr:nth-child(even) {
+    background-color: #0e0e1a;
+}
+
+tr:hover {
+    background-color: #1a1a30;
+    color: var(--neon-green);
+}
+
+/* Animación de entrada */
+@keyframes zoomIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
